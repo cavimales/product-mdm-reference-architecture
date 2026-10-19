@@ -12,7 +12,7 @@ flowchart LR
     end
 
     subgraph Integration["Integration layer"]
-        KAFKA["Kafka backbone<br/>canonical product schema<br/>schema registry<br/>dead-letter topics, replay<br/>ERP write-back adapters"]
+        KAFKA["Kafka backbone<br/>Canonical product schema<br/>Schema registry<br/>Dead-letter topics, replay<br/>ERP write-back adapters"]
     end
 
     subgraph MDM["MDM and consumers"]
