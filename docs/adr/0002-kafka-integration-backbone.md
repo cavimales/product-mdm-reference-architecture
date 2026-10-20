@@ -43,6 +43,42 @@ Kafka between STEP, the ERPs and bulk consumers. No ERP or bulk consumer integra
 
 The main reason is the shape of master data distribution: one golden record change must reach many consumers, reliably and repeatably, and new consumers will keep appearing. A durable, replayable publish-subscribe log fits that better than orchestrated flows.
 
+### Why Kafka rather than an ESB or iPaaS
+
+An ESB removes point-to-point *connections*, but not necessarily point-to-point *logic*. Each system connects once to the bus, in a hub-and-spoke shape. Inside the bus, though, integrations are usually built as one flow per source and target, each with its own mapping and routing. Adding a consumer still means building a new flow, often by a central team.
+
+```mermaid
+flowchart LR
+    subgraph P2P["Point-to-point"]
+        S1["STEP"] --- A1["ERP-A"]
+        S1 --- B1["ERP-B"]
+        S1 --- W1["Warehouse"]
+    end
+    subgraph ESB["ESB / iPaaS"]
+        S2["STEP"] --- BUS["Bus<br/>Flow per target"]
+        BUS --- A2["ERP-A"]
+        BUS --- B2["ERP-B"]
+        BUS --- W2["Warehouse"]
+    end
+    subgraph K["Kafka"]
+        S3["STEP"] --> T["Golden topic"]
+        T --> A3["ERP-A"]
+        T --> B3["ERP-B"]
+        T --> W3["Warehouse"]
+    end
+```
+
+ESBs can publish to multiple subscribers, but two properties that matter for master data distribution are typically missing or limited:
+
+| Need | ESB / iPaaS | Kafka |
+| --- | --- | --- |
+| Add a new consumer | Build or change a flow in the central platform | Consumer subscribes to the golden topic itself |
+| Recover or bootstrap a consumer | Messages are usually gone once delivered; needs a re-export from STEP | Replay retained events from any point |
+| Where routing rules live | Centrally, in the bus (content-based routing) | At the edges: each ERP adapter filters what it needs, or a routing service writes target-specific topics |
+| Cost growth | Often priced per connector, flow or throughput | Grows with infrastructure, not with the number of consumers |
+
+ESBs and iPaaS remain stronger for orchestrated, request-response flows and for connecting many SaaS applications with prebuilt connectors. Neither is the main need here.
+
 ## Consequences
 
 - One place to publish, monitor and replay product changes
