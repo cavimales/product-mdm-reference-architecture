@@ -5,7 +5,7 @@
 
 ## Context
 
-FreshLine creates product data in two legacy ERPs and a supplier portal. New items need governed onboarding, while existing ERP items must keep flowing during migration.
+FreshLine creates product data in two legacy ERPs, and suppliers send new items by spreadsheet and email. New items need governed onboarding, while existing ERP items must keep flowing during migration.
 
 ## Options considered
 
@@ -16,7 +16,7 @@ FreshLine creates product data in two legacy ERPs and a supplier portal. New ite
 
 ## Decision
 
-Centralized for new items, created through supplier onboarding in STEP. Consolidation for legacy ERP items until each source is cut over.
+Centralized for new items, created by suppliers in the STEP supplier portal. Consolidation for legacy ERP items until each source is cut over.
 
 ## Consequences
 

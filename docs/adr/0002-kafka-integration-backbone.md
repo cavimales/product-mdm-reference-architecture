@@ -5,17 +5,17 @@
 
 ## Context
 
-STEP must exchange product data with three sources and several consumers. Point-to-point links would multiply formats, retries and monitoring.
+STEP must exchange product data with two ERPs and several consumers. Point-to-point links would multiply formats, retries and monitoring.
 
 ## Options considered
 
 1. Point-to-point integrations from STEP to each system
 2. An ESB or iPaaS orchestrating every flow
-3. Kafka between STEP and every system, using STEP's native Kafka inbound and outbound endpoints
+3. Kafka between STEP and the ERPs and bulk consumers, using STEP's native Kafka inbound and outbound endpoints
 
 ## Decision
 
-Kafka between STEP and every system. No system integrates with STEP directly.
+Kafka between STEP, the ERPs and bulk consumers. No ERP or bulk consumer integrates with STEP directly.
 
 ## Consequences
 
